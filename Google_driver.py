@@ -91,7 +91,7 @@ def ETL_CSV(file_path):
     logging.info('Running the ETL Process...')
     insert_data = []
     finish_file_name = []
-    selected_col = ['您的姓名','性別','連絡電話','電子郵件','出發日期','旅遊地點','業務人員','餐食安排','飯店安排','交通安排','行程安排','出團領隊','出團導遊','是否有收到行前說明資料','下次旅遊會優先選擇東南旅遊的原因為何','若您尚非東南會員，請填寫手機號碼(或「同上」連絡電話)，以利我們邀請您加入會員','本意見函資料，僅提供東南旅遊於意見收集及行銷方案使用','歡迎提供您的寶貴意見讓我們知道','填答時間','填答秒數','IP紀錄','額滿結束註記','使用者紀錄','會員時間','會員編號','自訂ID','備註']
+    selected_col = ['您的姓名','性別','連絡電話','電子郵件','出發日期','旅遊地點','業務人員','餐食安排','飯店安排','交通安排','行程安排','出團領隊','出團導遊','是否有收到行前說明資料','下次旅遊會優先選擇旅遊的原因為何','若您尚非會員，請填寫手機號碼(或「同上」連絡電話)，以利我們邀請您加入會員','本意見函資料，僅提供旅遊於意見收集及行銷方案使用','歡迎提供您的寶貴意見讓我們知道','填答時間','填答秒數','IP紀錄','額滿結束註記','使用者紀錄','會員時間','會員編號','自訂ID','備註']
     select_settour_cause_col = ['業務人員','餐食安排','飯店安排','交通安排','行程安排','出團領隊','出團導遊']
     Pending_File_List = listdir(file_path)
     absPending_File_List = [os.path.join(file_path, filename) for filename in Pending_File_List if 'csv' in filename]
@@ -119,7 +119,7 @@ def ETL_CSV(file_path):
             settour_cause = df.merge(settour_cause_score_df, how='left',left_on='您的姓名', right_on='您的姓名').fillna('')
             settour_cause[select_settour_cause_col] = settour_cause[select_settour_cause_col].replace('非常不滿意', 1).replace('不滿意',2).replace('普通', 3).replace('滿意', 4).replace('非常滿意', 5)
             settour_cause.pop('下次旅遊會優先選擇旅遊的原因為何')
-            settour_cause[['是否有收到行前說明資料','本意見函資料，僅提供旅遊於意見收集及行銷方案使用']] = settour_cause[['是否有收到行前說明資料','本意見函資料，僅提供東南旅遊於意見收集及行銷方案使用']].replace('否', 'N').replace('是','Y').replace('同意', 'Y').replace('不同意', 'N')
+            settour_cause[['是否有收到行前說明資料','本意見函資料，僅提供旅遊於意見收集及行銷方案使用']] = settour_cause[['是否有收到行前說明資料','本意見函資料，僅提供旅遊於意見收集及行銷方案使用']].replace('否', 'N').replace('是','Y').replace('同意', 'Y').replace('不同意', 'N')
             settour_cause['group_no'] = absPending_File.split('/')[len(absPending_File.split('/')) - 1].replace('國內團體旅遊意見函', '').replace('.csv', '')
             logging.info(settour_cause)
             finish_file_name.append(absPending_File.split('/')[len(absPending_File.split('/')) - 1].replace('國內團體旅遊意見函', '').replace('.csv', ''))
